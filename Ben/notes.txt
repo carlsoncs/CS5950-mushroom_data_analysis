@@ -1,1 +1,21 @@
 Here is a place for ben to leave notes regarding his progress, updates, etc.
+
+================================================================================
+# Data file
+The data file does not contain a header line. 
+
+When opening this file remember to inidicate this or R will assume that the first line is a header line.
+
+I added a header to a copy of the data. My code use the column names in as I wrote them. This does not have be the file used for the final product.
+
+
+================================================================================
+# util.r
+
+Contains utilities for experimentation. 
+
+================================================================================
+# myclass.r
+
+File contains a manual classification of the data. 
+This was made for the sake of learning its features. 
