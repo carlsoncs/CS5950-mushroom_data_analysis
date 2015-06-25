@@ -6,3 +6,7 @@ and each fold is placed in a list called "folds".  The folds list can be
 accessed via index, (Index starting at 1).  Each element in the folds list
 is a dataframe subset of the mushrooms data, and responds to all the same
 variables names as the original subset does.  
+
+
+The Classification Tree script is a first attempt at providing some infor-
+mation about the classification trees produced using the mushroom data.
