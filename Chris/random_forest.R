@@ -49,9 +49,27 @@ for( i in 1:(length(folds)))
 	# Name i'th fold 'test' and add the 
 	# remaining folds to a list called 'train'
 	test  <- folds[[i]]
-	train <- folds[c(seq(1:(length(folds))))[-i]]
- 
-	
+	for( j in 1:(length(folds)))
+	{
+		if(i==1 && j==1)
+		{	
+			train <- folds[[2]]
+			j = j+1
+		}
+		else
+		{
+		if(j==1)
+		{
+			train <- folds[[1]]
+		}
+		else if(j==i)
+		{}
+		else
+		 {
+			 train <- merge(train, folds[[j]], by="ID")
+		 }
+		}
+ 	}
 			
 	# First generate the models for each of the training data lists.
 	fits  <- lapply(train, FUN=grow_forest, test_data=test)
