@@ -54,7 +54,7 @@ while( length(all_indices) > 0 )
   index_folds[[i]] <- append( index_folds[[i]], all_indices[1])
   all_indices <- setdiff(all_indices, all_indices[1])
   i = i+1
-  if( i > 10 ) i = 1
+  if( i > n_folds ) i = 1
 }
 
 	## Now we have a list of vectors such that all the vectors contain
