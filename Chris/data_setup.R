@@ -31,7 +31,7 @@ mushrooms=read.csv("../Data/agaricus-lepiota.data", header=TRUE, sep=",")
 
 
 # Specify Some Variables
-n_folds <- 10
+n_folds <- 3
 index_folds <- list()
 folds <- list()
 
@@ -64,10 +64,12 @@ while( length(all_indices) > 0 )
 	## subset the data into ten subsets.
 
   folds <- list(data.frame(mushrooms[index_folds[[1]], ]), data.frame(mushrooms[index_folds[[2]], ]),
-								data.frame(mushrooms[index_folds[[3]], ]), data.frame(mushrooms[index_folds[[4]], ]),
-								data.frame(mushrooms[index_folds[[5]], ]), data.frame(mushrooms[index_folds[[6]], ]),
-								data.frame(mushrooms[index_folds[[7]], ]), data.frame(mushrooms[index_folds[[8]], ]),
-								data.frame(mushrooms[index_folds[[9]], ]), data.frame(mushrooms[index_folds[[10]], ]))
+								data.frame(mushrooms[index_folds[[3]], ]))#
+								# , data.frame(mushrooms[index_folds[[4]], ]),
+								# data.frame(mushrooms[index_folds[[5]], ]))
+								# , data.frame(mushrooms[index_folds[[6]], ]),
+								# data.frame(mushrooms[index_folds[[7]], ]), data.frame(mushrooms[index_folds[[8]], ]),
+								# data.frame(mushrooms[index_folds[[9]], ]), data.frame(mushrooms[index_folds[[10]], ]))
 
 
 # Now the i'th fold can be accessed as a list item by: folds[[i]]
