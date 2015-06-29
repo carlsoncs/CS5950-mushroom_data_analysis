@@ -1,30 +1,33 @@
-library(rpart)
-library(plyr)	
+source('Functions.R')
+########################################################################
+#						random_forest.R
+########################################################################
+#
+#
+#
+#			###			Description					###
+#
+#		
+#			###			By							###
+#
+#	Written by Christopher Carlson 
+#	
+#			###			For							###
+#
+#	Written initially for Western Michigan University's Summer 1 2015
+# 		Semester course, CS 5950 - Machine Learning. 
+#
+#########													  ##########
 
 
-##					FUNCTIONS					##
-
-# This function applies ceiling and mean functions at the 
-# same time so that both operations can be completed using
-# a single 'apply' call.
-ceil_mean <- function(x)
-{
-	ceiling(mean(x))
-}
-
+# "Grow Tree"
 # Function to generate a model given a data frame object from the 
 # mushrooms data set.
 grow_tree <- function(data_frame) {
 	rpart(edibility~., data=data_frame, method="class")
 }
 
-
-# A function to slightly reduce the amount of code required
-# to print a summary.
-print_summary <- function(item) {
-	print(summary(item))
-}
-
+# "Test Fit"
 # A function to generate a prediction for some data given a model.
 test_fit <- function(fit, test_data) {
 	pred <- data.frame(predict(fit, test_data, type='prob'))
@@ -41,6 +44,7 @@ test_fit <- function(fit, test_data) {
 	results
 }
 
+# "Get Confustion Matrix" 
 # A function to compare the predictions with the labels and
 # to construct a confusion matrix based on the comparison 
 # results.

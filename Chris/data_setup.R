@@ -1,8 +1,30 @@
-# data_setup.R partitions the data into k-index_folds which can be used
-# with any of the various models we might want to try out with the
-# data.  The goal of this is to be able to run this, and to initiate
-# the data into the R-workspace so models can be trained and tested
-# using the data.
+source('Functions.R')
+########################################################################
+#						data_setup.R
+########################################################################
+#
+#
+#
+#			###			Description					###
+#
+# 	Partitions the data into k-index_folds which can be used
+#	with any of the various models we might want to try out with the
+# 	data.  The goal of this is to be able to run this, and to initiate
+# 	the data into the R-workspace so models can be trained and tested
+# 	using the data.
+#		
+#			###			By							###
+#
+#	Written by Christopher Carlson 
+#	
+#			###			For							###
+#
+#	Written initially for Western Michigan University's Summer 1 2015
+# 		Semester course, CS 5950 - Machine Learning. 
+#
+#########													  ##########
+
+
 
 # Load Data
 mushrooms=read.csv("../Data/agaricus-lepiota.data", header=TRUE, sep=",")
