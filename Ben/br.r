@@ -2,10 +2,9 @@ start = Sys.time()
 print(start)
 
 # Constants
-mylog = log
 nCol = ncol(mush)
 index = 1:nrow(mush)
-k = 3
+k = 5
 
 # Feature value summary table setup. 
 setsize = 1:nCol
@@ -15,56 +14,53 @@ for (i in 1:nCol)
 }
 maxFcnt = max(setsize)
 
-# Results table setup
-pred = factor(c("e", "p"))
-real = factor(c("e", "p"))
-confuse = table(pred, real)
-confuse[,] = 0
-
+# Results structures. 
 preds = data.frame(mush$class,mush$class,mush$class,mush$class,mush$class,rep(0,nrow(mush)))
 names(preds) = c("real", "nbc", "lda", "qda", "log.reg", "fold")
 
+# Set of test features. (not including class)
 testFeatureSet = 2:nCol
 
 for (fold in 0:(k-1))
-#for (fold in 1:1)
 {
+	# Partition Data for NBC
 	test = mush[which(index %% k == fold),]
 	train = mush[which(index %% k != fold),]
 	traine = train[which(train$class == "e"),]
 	trainp = train[which(train$class == "p"),]
 	
+	# Initialize results structures. 
 	test.preds = preds[which(index %% k == fold),]
 	test.preds$fold = fold
 	test.preds$real = test$class
 	
-	pe = log(nrow(traine))
-	pp = log(nrow(trainp))
+	pe = log(nrow(traine)) # P(edible)
+	pp = log(nrow(trainp)) # P(poisonous)
 
-	# Create concise matrix of 
+	# Create concise matrix of log(P(feature value|class)) estimates
 	pfe = matrix(nrow=nCol, ncol=maxFcnt)
 	pfp = matrix(nrow=nCol, ncol=maxFcnt)
-	eFeatValProb = matrix(nrow=nCol, ncol=maxFcnt)
+	eFeatValLogit = matrix(nrow=nCol, ncol=maxFcnt)
 	for (c in 1:nCol)
 	{
 		l = levels(mush[1,c])
 		for (v in 1:length(l))
 		{
-			emptyWeight = -max(log(sum(train[,c] == l[v])), 0)
-			pfe[c,v] = max(log(sum(traine[,c] == l[v])), emptyWeight)
-			pfp[c,v] = max(log(sum(trainp[,c] == l[v])), emptyWeight)
-			#eFeatValProb[c,v] = sum(traine[,c] == l[v]) / sum(train[,c] == l[v])
-			#eFeatValProb[c,v] = pfe[c,v] / (pfe[c,v] + pfp[c,v])
+			valueTotal = 0#max(log(sum(train[,c] == l[v])), 0)
+			pfe[c,v] = max(log(sum(traine[,c] == l[v])) , -valueTotal)
+			pfp[c,v] = max(log(sum(trainp[,c] == l[v])) , -valueTotal)
 		}
 	}
-	eFeatValProb = pfe - pfp
+	# Logit(ish) Estimate for numerical methods
+	eFeatValLogit = pfe - pfp
 	
 	# Create probabalistic data table. 
 	mush.eprob = data.frame(mush[,1],rep(list(rep(-1,nrow(mush))),nCol))
 	names(mush.eprob) = names(mush)
 	for (c in 2:nCol)
 	{
-		mush.eprob[,c] = eFeatValProb[(as.integer(mush[,c])-1) * nCol + c]
+		# Fancy vector method for setting a column of values at a time. 
+		mush.eprob[,c] = eFeatValLogit[(as.integer(mush[,c])-1) * nCol + c]
 	}
 	test.eprob = mush.eprob[which(index %% k == fold),]
 	train.eprob = mush.eprob[which(index %% k != fold),]
@@ -80,11 +76,6 @@ for (fold in 0:(k-1))
 	}
 	test.preds$nbc = factor(res, levels=levels(mush[1,1]))
 	
-	#f = (class~cap.shape+cap.surface+cap.color+bruises+odor+gill.attachment
-	#	+gill.spacing+gill.size+gill.color+stalk.shape+stalk.root
-	#	+stalk.surface.above.ring+stalk.surface.below.ring
-	#	+stalk.color.above.ring+stalk.color.below.ring+veil.color
-	#	+ring.number+ring.type+spore.print.color+population+habitat)
 	f = as.formula(paste("class~",paste(names(mush)[testFeatureSet], collapse="+")))
 	# LDA
 	lda.fit = lda(f, data=train.eprob)

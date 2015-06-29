@@ -1,2 +1,4 @@
 library(MASS)
-mush = read.csv("mydata.csv")
+mush0 = read.csv("mydata.csv")
+mush = mush[,-17]
+
