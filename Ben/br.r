@@ -52,7 +52,7 @@ for (fold in 0:(k-1))
 		}
 	}
 	# Logit(ish) Estimate for numerical methods
-	eFeatValLogit = pfe - pfp
+	eFeatValLogit = pfe - pfp # Matrix subtraction
 	
 	# Create probabalistic data table. 
 	mush.eprob = data.frame(mush[,1],rep(list(rep(-1,nrow(mush))),nCol))
