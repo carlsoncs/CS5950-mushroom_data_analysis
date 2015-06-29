@@ -35,7 +35,7 @@ n_folds <- 3
 index_folds <- list()
 folds <- list()
 
-n_entries_per_fold <- floor(nrow(mushrooms)/(n_folds))
+n_entries_per_fold <- (floor(nrow(mushrooms)/(n_folds)) -1 )
 
 # Generate the indices we will use to segment the data.
 all_indices <- seq_len(nrow(mushrooms))
@@ -46,6 +46,7 @@ while( length(all_indices) > n_entries_per_fold)
   index_folds <- c(index_folds, list(temp))
 }
 
+print(str(index_folds))
 	## At this point there are a few indices that were not used.  These
 	## indices are added to the index_folds vectors starting at vector 1.
 i = 1
@@ -54,7 +55,7 @@ while( length(all_indices) > 0 )
   index_folds[[i]] <- append( index_folds[[i]], all_indices[1])
   all_indices <- setdiff(all_indices, all_indices[1])
   i = i+1
-  if( i > 10 ) i = 1
+  if( i > n_folds ) i = 1
 }
 
 	## Now we have a list of vectors such that all the vectors contain
@@ -64,7 +65,7 @@ while( length(all_indices) > 0 )
 	## subset the data into ten subsets.
 
   folds <- list(data.frame(mushrooms[index_folds[[1]], ]), data.frame(mushrooms[index_folds[[2]], ]),
-								data.frame(mushrooms[index_folds[[3]], ]))#
+								data.frame(mushrooms[index_folds[[3]], ]))
 								# , data.frame(mushrooms[index_folds[[4]], ]),
 								# data.frame(mushrooms[index_folds[[5]], ]))
 								# , data.frame(mushrooms[index_folds[[6]], ]),
