@@ -46,7 +46,7 @@ for (fold in 0:(k-1))
 		l = levels(mush[1,c])
 		for (v in 1:length(l))
 		{
-			valueTotal = 0#max(log(sum(train[,c] == l[v])), 0)
+			valueTotal = max(log(sum(train[,c] == l[v])), 0) * 100
 			pfe[c,v] = max(log(sum(traine[,c] == l[v])) , -valueTotal)
 			pfp[c,v] = max(log(sum(trainp[,c] == l[v])) , -valueTotal)
 		}
